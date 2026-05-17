@@ -5,3 +5,20 @@ dist-electron
 *.local
 .DS_Store
 Thumbs.db
+
+# 忽略所有打包生成的文件夹
+dist/
+dist-electron/
+release/
+
+# 忽略所有底层动态链接库和外壳文件（极其重要！）
+*.exe
+*.dll
+*.pak
+*.dat
+*.bin
+locales/
+
+# 忽略依赖和环境变量
+node_modules/
+.env

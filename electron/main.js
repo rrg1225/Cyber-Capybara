@@ -172,6 +172,12 @@ ipcMain.on('show-context-menu', (event) => {
   menu.popup({ window: BrowserWindow.fromWebContents(event.sender) })
 })
 
+ipcMain.on('move-window-by', (_event, dx, dy) => {
+  if (!mainWindow) return
+  const [x, y] = mainWindow.getPosition()
+  mainWindow.setPosition(x + dx, y + dy)
+})
+
 ipcMain.on('window-mouseenter', () => {
   if (!isSnapped || !mainWindow || !savedVisibleBounds) return
   isSnapping = true
@@ -201,9 +207,19 @@ ipcMain.on('window-mouseleave', () => {
 })
 
 ipcMain.on('chat-with-qwen', (event, messages) => {
-  const apiKey = process.env.QWEN_API_KEY
+  const userMessages = messages.filter((m) => m.role === 'user')
+  const userText = userMessages.length > 0 ? userMessages[userMessages.length - 1].content : ''
+
+  if (userText.trim().startsWith('sk-')) {
+    store.set('QWEN_API_KEY', userText.trim())
+    event.sender.send('qwen-stream-data', '密钥已吃掉！我现在的灵魂已经注入，可以和我聊天啦~ 🐾')
+    event.sender.send('qwen-stream-end')
+    return
+  }
+
+  const apiKey = store.get('QWEN_API_KEY') || process.env.QWEN_API_KEY
   if (!apiKey) {
-    event.sender.send('qwen-stream-error', '请在 .env 文件中配置 API Key')
+    event.sender.send('qwen-stream-error', '我还是一只没有灵魂的卡皮巴拉...请把 sk- 开头的 API Key 像聊天一样发给我吧！')
     return
   }
 

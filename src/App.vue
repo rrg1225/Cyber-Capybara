@@ -22,7 +22,9 @@
           :src="petImg"
           alt="Desktop pet"
           draggable="false"
-          @click="onPetClick"
+          @pointerdown="onPointerDown"
+          @pointermove="onPointerMove"
+          @pointerup="onPointerUp"
           @contextmenu.prevent="onContextMenu"
         />
         <input
@@ -107,6 +109,42 @@ function onHide() {
 
 function onContextMenu() {
   window.electronAPI?.showContextMenu()
+}
+
+// --- Custom drag via Pointer Events ---
+let isDragging = false
+let lastScreenX = 0
+let lastScreenY = 0
+let hasMoved = false
+
+function onPointerDown(e) {
+  isDragging = true
+  hasMoved = false
+  lastScreenX = e.screenX
+  lastScreenY = e.screenY
+  e.target.setPointerCapture(e.pointerId)
+}
+
+function onPointerMove(e) {
+  if (!isDragging) return
+  const dx = e.screenX - lastScreenX
+  const dy = e.screenY - lastScreenY
+  if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
+    hasMoved = true
+  }
+  if (hasMoved) {
+    window.electronAPI?.moveWindowBy(dx, dy)
+    lastScreenX = e.screenX
+    lastScreenY = e.screenY
+  }
+}
+
+function onPointerUp(e) {
+  isDragging = false
+  e.target.releasePointerCapture(e.pointerId)
+  if (!hasMoved) {
+    onPetClick()
+  }
 }
 
 function onPetClick() {
@@ -241,7 +279,6 @@ onUnmounted(() => {
 
 .pet-wrapper {
   position: relative;
-  -webkit-app-region: drag;
   line-height: 0;
 }
 
@@ -302,8 +339,8 @@ onUnmounted(() => {
   display: block;
   user-select: none;
   cursor: pointer;
-  -webkit-app-region: no-drag;
   transition: transform 0.25s ease;
+  touch-action: none;
 }
 
 .pet-image:hover {

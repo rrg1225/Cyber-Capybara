@@ -26,4 +26,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   windowMouseEnter: () => ipcRenderer.send('window-mouseenter'),
 
   windowMouseLeave: () => ipcRenderer.send('window-mouseleave'),
+
+  moveWindowBy: (dx, dy) => ipcRenderer.send('move-window-by', dx, dy),
 })
