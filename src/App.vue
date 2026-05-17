@@ -8,7 +8,7 @@
       <div class="pet-wrapper">
         <Transition name="bubble-fade">
           <div v-if="showBubble" class="speech-bubble">
-            <p class="speech-text" :class="{ streaming: isStreaming }">{{ currentQuote }}</p>
+            <p class="speech-text">{{ currentQuote }}</p>
             <span class="bubble-tail" aria-hidden="true" />
           </div>
         </Transition>
@@ -296,7 +296,7 @@ onUnmounted(() => {
   border-radius: 16px;
   box-shadow: 0 4px 14px rgba(255, 143, 178, 0.35);
   -webkit-app-region: no-drag;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .speech-text {
@@ -306,7 +306,11 @@ onUnmounted(() => {
   color: #5c4a42;
   text-align: center;
   font-weight: 500;
-  white-space: nowrap;
+  white-space: pre-wrap;
+  word-break: break-word;
+  max-height: 100px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 
 .bubble-tail {
@@ -402,10 +406,6 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.72);
 }
 
-.speech-text.streaming {
-  white-space: normal;
-}
-
 .bubble-fade-enter-active,
 .bubble-fade-leave-active {
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -415,6 +415,17 @@ onUnmounted(() => {
 .bubble-fade-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(6px);
+}
+
+.speech-text::-webkit-scrollbar {
+  width: 4px;
+}
+.speech-text::-webkit-scrollbar-track {
+  background: transparent;
+}
+.speech-text::-webkit-scrollbar-thumb {
+  background: #ffd6e8;
+  border-radius: 4px;
 }
 
 @keyframes float {
