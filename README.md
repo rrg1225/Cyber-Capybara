@@ -16,6 +16,7 @@ A lightweight Electron + Vue desktop companion with transparent floating-window 
 - **声音反馈**：点击、思考、开心、警告等本地音效增强陪伴感。
 - **可选 AI 对话**：通过本地 `electron-store` 保存 Qwen API Key，生产环境不依赖明文 `.env`。
 - **安全隔离**：启用 `contextIsolation`、`sandbox` 和 preload 白名单 IPC。
+- **监听清理**：组件卸载时清理 Qwen streaming IPC 监听，避免开发热更新重复回调。
 
 ### 快速开始
 
@@ -57,6 +58,7 @@ QWEN_API_KEY=YOUR_API_KEY_HERE
 - **Local sound feedback** for click, thinking, happy, and warning states.
 - **Optional Qwen chat** with API key stored locally through `electron-store`.
 - **Security-conscious shell** using `contextIsolation`, `sandbox`, and a small preload IPC bridge.
+- **Listener cleanup** removes Qwen streaming IPC handlers on unmount to avoid duplicate callbacks during development.
 
 ### Quick Start
 

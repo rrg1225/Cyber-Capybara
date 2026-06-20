@@ -253,6 +253,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  window.electronAPI?.offQwenEvents?.()
   if (hideTimer) {
     clearTimeout(hideTimer)
   }
