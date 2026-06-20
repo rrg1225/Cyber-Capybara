@@ -1,36 +1,91 @@
 # Capybara Desktop Pet
 
-A lightweight desktop pet built with Vue, Vite, and Electron. The app renders a draggable animated companion with sound effects and local desktop-window behavior.
+[简体中文](#简体中文) | [English](#english)
 
-## Features
+A lightweight Electron + Vue desktop companion with transparent floating-window behavior, drag interactions, edge snapping, sound effects, and optional Qwen-powered chat.
 
-- Vue 3 renderer powered by Vite.
-- Electron shell for desktop floating-window behavior.
-- Local media assets for animation and interaction sounds.
-- Optional Qwen API key configuration through `.env` for future AI interaction features.
+---
 
-## Quick Start
+## 简体中文
+
+### 项目亮点
+
+- **透明悬浮桌宠**：Electron frameless transparent window，支持置顶展示。
+- **自然交互**：点击触发随机治愈文案，拖拽移动，靠边自动隐藏，鼠标靠近自动展开。
+- **托盘与快捷键**：托盘菜单隐藏/显示，`Ctrl + Shift + P` 快速切换窗口。
+- **声音反馈**：点击、思考、开心、警告等本地音效增强陪伴感。
+- **可选 AI 对话**：通过本地 `electron-store` 保存 Qwen API Key，生产环境不依赖明文 `.env`。
+- **安全隔离**：启用 `contextIsolation`、`sandbox` 和 preload 白名单 IPC。
+
+### 快速开始
 
 ```bash
 npm install
 npm run dev
 ```
 
-## Build
+开发模式会启动 Vite 渲染层，Electron 主进程加载 `http://localhost:5173`。
+
+### 打包
 
 ```bash
 npm run build:renderer
 npm run build
 ```
 
-## Environment
+Windows 安装包输出到 `release/`。
 
-Copy `.env.example` to `.env` if you want to enable API-backed features.
+### AI Key 设置
+
+方式一：复制 `.env.example` 为 `.env`，仅本地开发使用。
 
 ```env
 QWEN_API_KEY=YOUR_API_KEY_HERE
 ```
 
+方式二：运行桌宠后，直接把 `sk-` 开头的 Key 当作聊天消息发给桌宠，应用会写入本地 `electron-store`，不会转发给模型。
+
+---
+
+## English
+
+### Highlights
+
+- **Transparent floating pet** with a frameless always-on-top Electron window.
+- **Natural interactions**: click quotes, drag movement, edge snapping, and hover-to-reveal behavior.
+- **Tray and shortcut controls**: tray menu plus `Ctrl + Shift + P` visibility toggle.
+- **Local sound feedback** for click, thinking, happy, and warning states.
+- **Optional Qwen chat** with API key stored locally through `electron-store`.
+- **Security-conscious shell** using `contextIsolation`, `sandbox`, and a small preload IPC bridge.
+
+### Quick Start
+
+```bash
+npm install
+npm run dev
+```
+
+Development mode starts the Vite renderer and loads it from Electron.
+
+### Build
+
+```bash
+npm run build:renderer
+npm run build
+```
+
+Windows installer artifacts are generated in `release/`.
+
+### AI Key Setup
+
+Option 1: copy `.env.example` to `.env` for local development.
+
+```env
+QWEN_API_KEY=YOUR_API_KEY_HERE
+```
+
+Option 2: send an `sk-` API key as a chat message inside the pet UI. The app stores it locally and filters it out before sending chat history to the model.
+
 ## Repository Topics
 
-`electron`, `vue`, `vite`, `desktop-pet`, `desktop-app`
+`electron`, `vue`, `vite`, `desktop-pet`, `desktop-app`, `qwen`
