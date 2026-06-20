@@ -1,10 +1,13 @@
 {
   "name": "desktop-pet-core",
   "version": "1.0.0",
-  "description": "卡皮巴拉桌宠",
+  "description": "Capybara desktop pet built with Vue, Vite, and Electron.",
+  "author": "lixian",
+  "license": "MIT",
   "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
+    "build:renderer": "vite build",
     "build": "vite build && electron-builder"
   },
   "dependencies": {
