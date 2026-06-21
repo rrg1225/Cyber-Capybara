@@ -12,7 +12,7 @@ A lightweight Electron + Vue desktop companion with transparent floating-window 
 
 - **透明悬浮桌宠**：Electron frameless transparent window，支持置顶展示。
 - **自然交互**：点击触发随机治愈文案，拖拽移动，靠边自动隐藏，鼠标靠近自动展开。
-- **托盘与快捷键**：托盘菜单隐藏/显示，`Ctrl + Shift + P` 快速切换窗口。
+- **托盘与快捷键**：托盘菜单控制显示/隐藏，`Ctrl + Shift + P` 快速切换窗口。
 - **声音反馈**：点击、思考、开心、警告等本地音效增强陪伴感。
 - **可选 AI 对话**：通过本地 `electron-store` 保存 Qwen API Key，生产环境不依赖明文 `.env`。
 - **安全隔离**：启用 `contextIsolation`、`sandbox` 和 preload 白名单 IPC。
