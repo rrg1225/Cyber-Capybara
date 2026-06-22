@@ -1,65 +1,72 @@
-# Capybara Desktop Pet
+# Cyber Capybara Desktop Pet
 
-[简体中文](#简体中文) | [English](#english)
+[![CI](https://github.com/rrg1225/Cyber-Capybara/actions/workflows/ci.yml/badge.svg)](https://github.com/rrg1225/Cyber-Capybara/actions/workflows/ci.yml)
+![Electron](https://img.shields.io/badge/Electron-Desktop-47848F?logo=electron)
+![Vue](https://img.shields.io/badge/Vue-3-42B883?logo=vuedotjs)
+![Vite](https://img.shields.io/badge/Vite-6-646CFF?logo=vite)
+![Qwen](https://img.shields.io/badge/Qwen-Optional%20Chat-FF6A00)
 
-A lightweight Electron + Vue desktop companion with transparent floating-window behavior, drag interactions, edge snapping, sound effects, and optional Qwen-powered chat.
+Cyber Capybara is a lightweight Electron + Vue desktop companion with transparent floating-window behavior, drag interactions, edge snapping, sound effects, tray controls, and optional Qwen-powered chat.
 
 > Resume and interview brief: [PORTFOLIO.md](PORTFOLIO.md)
 > Enterprise architecture: [docs/ENTERPRISE_ARCHITECTURE.md](docs/ENTERPRISE_ARCHITECTURE.md)
 
----
+## Features
 
-## 简体中文
+- Transparent frameless always-on-top Electron window.
+- Click quotes, drag movement, edge snapping, and hover-to-reveal behavior.
+- Tray menu and `Ctrl + Shift + P` visibility toggle.
+- Local sound feedback for click, thinking, happy, and warning states.
+- Optional Qwen streaming chat.
+- API key storage through `electron-store`.
+- Chat safety layer for key filtering, role normalization, and context bounds.
+- Renderer build CI.
 
-### 项目亮点
+## Architecture
 
-- **透明悬浮桌宠**：Electron frameless transparent window，适合长期悬浮在桌面角落。
-- **自然交互**：点击文案、拖拽移动、靠边吸附、自动隐藏、鼠标靠近展开。
-- **托盘与快捷键**：托盘菜单控制显示/隐藏，`Ctrl + Shift + P` 快速切换窗口。
-- **本地音效反馈**：点击、思考、开心、警告等音效增强陪伴感。
-- **可选 Qwen 对话**：API Key 存在本地 `electron-store`，生产环境不依赖明文 `.env`。
-- **聊天安全边界**：`electron/chatSafety.js` 统一过滤 `sk-` 密钥、限制上下文长度、规范角色。
-- **自动化验证**：Node test 覆盖聊天安全逻辑，CI 同时跑测试和 renderer 构建。
+```text
+Vue renderer
+  -> preload bridge
+  -> Electron main process
+  -> chat safety layer
+  -> Qwen-compatible streaming API
+```
 
-### 快速开始
+Key files:
+
+| Path | Purpose |
+| --- | --- |
+| `src/App.vue` | Pet UI, pointer interaction, chat bubble |
+| `electron/main.js` | Window, tray, snapping, IPC, Qwen streaming |
+| `electron/preload.cjs` | Safe IPC bridge |
+| `electron/chatSafety.js` | Key filtering and message bounding |
+
+## Quick Start
 
 ```bash
 npm install
 npm run dev
 ```
 
-### 常用命令
+## Build
 
 ```bash
-npm test
 npm run build:renderer
 npm run build
 ```
 
-### AI Key 设置
+Windows installer artifacts are written to `release/`.
 
-方式一：复制 `.env.example` 为 `.env`，仅用于本地开发。
+## AI Key Setup
+
+Option 1: copy `.env.example` to `.env` for local development.
 
 ```env
 QWEN_API_KEY=YOUR_API_KEY_HERE
 ```
 
-方式二：运行桌宠后，把 `sk-` 开头的 Key 当作聊天消息发送给桌宠。应用会写入本地 `electron-store`，并在发送给模型前过滤掉密钥消息。
+Option 2: send an `sk-` key in the pet chat box. The app stores it locally and removes key messages from model-bound history.
 
----
+## License
 
-## English
-
-### Highlights
-
-- **Transparent floating pet** with a frameless always-on-top Electron window.
-- **Natural interactions**: click quotes, drag movement, edge snapping, and hover-to-reveal behavior.
-- **Tray and shortcut controls** via tray menu and `Ctrl + Shift + P`.
-- **Local sound feedback** for click, thinking, happy, and warning states.
-- **Optional Qwen chat** with API key stored locally through `electron-store`.
-- **Tested chat safety layer** for key filtering, role normalization, and context truncation.
-- **CI verification** for unit tests and renderer build.
-
-### Repository Topics
-
-`electron`, `vue`, `vite`, `desktop-pet`, `desktop-app`, `qwen`
+MIT
